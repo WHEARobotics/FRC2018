@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    WHEA Robotics 3881 code for FRC 2017.
+    WHEA Robotics 3881 code for FRC 2018.
 #test
 """
 
@@ -17,9 +17,9 @@ class MyRobot(wpilib.IterativeRobot):
 
         """
         Button Map for Dual Joysticks:
-        1: Shooter + Loader (Hold for 1 second)
-        2: Climber
-        3: Gatherer
+        1: Climber
+        2: Shooter/Loader (Intake)
+        3: Shooter/Loader (Outtake)
         """
         
         # Configure shooter motor controller.
@@ -54,15 +54,10 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_joy = wpilib.Joystick(1)
         self.climb = wpilib.Spark(0)
         self.gatherer = wpilib.Spark(1)
-        self.agitator = wpilib.Jaguar(2)
-        self.loader = wpilib.Jaguar(3)
         self.drive = wpilib.RobotDrive(self.l_motor , self.r_motor)
         self.counter = 0
-        self.mode = 0
         #wpilib.CameraServer.launch()
         #IP for camera server: http://10.38.81.101:1181/
-        
-        
         
 
     def autonomousInit(self):
@@ -73,46 +68,17 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motor.setPosition(0)
         self.l_motor.enableBrakeMode(True)
         self.r_motor.enableBrakeMode(True)
-        self.agitator.set(0.7)
-    
+       
 
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
-        """
-        #Rotates
-        if self.auto_loop_counter <34:
-            self.drive.drive(-0.5,-1)
-        """
+    
         if self.r_motor.getPosition()> -4000 and self.auto_loop_counter <800:
             self.drive.drive(-1,0)
 
         else:
             self.drive.drive(0,0)
-        """
-        if self.auto_loop_counter <100:
-            self.drive.drive(-0.5,0)
         
-        #Drives
-        if self.auto_loop_counter >=100 and self.auto_loop_counter <300:
-            self.drive.drive(1,0)
-        
-        if self.auto_loop_counter <50:
-            self.drive.drive(0,1)
-        elif self.auto_loop_counter >=50 and self.auto_loop_counter <100:
-            self.drive.drive(1,1)
-        elif self.auto_loop_counter >=100 and self.auto_loop_counter <150:
-            self.shooter.set(1)
-        elif self.auto_loop_counter >=200 and self.auto_loop_counter <250:
-            self.drive.drive(-1,-1)
-        
-        #This stops the robot at 14.5 seconds
-        #elif self.auto_loop_counter >=(725):
-            #self.robot_drive.drive(0,0)
-        
-        else:
-            self.drive.drive(0,0)
-        
-        """
         self.auto_loop_counter +=1
 
         if self.auto_loop_counter % 50 == 0:
@@ -120,24 +86,15 @@ class MyRobot(wpilib.IterativeRobot):
             print(self.auto_loop_counter, ' pos: ', self.l_motor.getPosition() , self.r_motor.getPosition())
         #This counter runs 50 times a second
         
-
        
-            
-            
-            
-            
-
-
     def teleopInit(self):
         #resets printed shooter position on enable
         self.shooter.setPosition(0)
         self.l_motor.setPosition(0)
         self.r_motor.setPosition(0)
-        self.tele_counter = 0
         self.auto_loop_counter = 0
         self.l_motor.enableBrakeMode(False)
         self.r_motor.enableBrakeMode(False)
-        self.agitator.set(0.7)
         
 
     def teleopPeriodic(self):
@@ -177,18 +134,6 @@ class MyRobot(wpilib.IterativeRobot):
         
         self.auto_loop_counter +=1
 
-        """
-        if self.mode == 0:
-            self.release.set(1)
-            if self.r_joy.getRawButton(1):
-                self.mode = 1
-                self.tele_counter = 0
-        elif self.mode == 1:
-            self.release.set(0.5)
-            if self.tele_counter < 100:
-                self.mode = 0
-        self.tele_counter += 1
-        """
         
         self.counter += 1
         if self.counter % 90 == 0:
