@@ -23,8 +23,8 @@ class MyRobot(wpilib.IterativeRobot):
         """
         
         # Configure shooter motor controller.
-        self.shooter = ctre.CANTalon(3) # Create a CANTalon object.
-        self.shooter.setFeedbackDevice(ctre.CANTalon.FeedbackDevice.QuadEncoder) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        self.shooter = ctre.wpi_talonsrx.WPI_TalonSRX(3) # Create a CANTalon object.
+        self.shooter.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
         # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
         # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
         self.shooter.configEncoderCodesPerRev(48)
@@ -33,14 +33,14 @@ class MyRobot(wpilib.IterativeRobot):
         self.shooter.enableBrakeMode(False)# This should change between brake and coast modes.
         
 
-        self.l_motor = ctre.CANTalon(1)
+        self.l_motor = ctre.wpi_talonsrx.WPI_TalonSRX(1)
         self.l_motor.setInverted(True)
-        self.r_motor = ctre.CANTalon(2)
+        self.r_motor = ctre.wpi_talonsrx.WPI_TalonSRX(2)
         self.r_motor.setInverted(True)
         # Configure shooter motor controller.
          # Create a CANTalon object.
-        self.l_motor.setFeedbackDevice(ctre.CANTalon.FeedbackDevice.QuadEncoder)
-        self.r_motor.setFeedbackDevice(ctre.CANTalon.FeedbackDevice.QuadEncoder)# Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        self.l_motor.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder)
+        self.r_motor.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder)# Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
         # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
         # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
         self.l_motor.configEncoderCodesPerRev(48)
@@ -153,4 +153,4 @@ class MyRobot(wpilib.IterativeRobot):
 
 
 if __name__ == "__main__":
-wpilib.run(MyRobot)
+    wpilib.run(MyRobot)
