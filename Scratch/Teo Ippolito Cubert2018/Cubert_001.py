@@ -15,17 +15,22 @@ class MyRobot(wpilib.IterativeRobot):
         This function is called upon program startup and
         should be used for any initialization code.
         """
-
+        """
+        1. Chute
+        2. Loader
+        3. Climber
+        """
         
         # Configure shooter motor controller.
-        self.shooter = ctre.wpi_talonsrx.WPI_TalonSRX(5) # Create a CANTalon object.
-        self.shooter.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder , 0 , 0) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        self.Chute = wpilib.Spark(8)
+        self.Chute = wpilib.Spark(9)# Create a CANTalon object.
+        #self.unloader.configSelectedFeedbackSensor(wpilib.Spark.FeedbackDevice.QuadEncoder , 0 , 0) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
         # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
         # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
         #self.shooter.configEncoderCodesPerRev(48)
         # resets shooter position on startup
-        self.shooter.setQuadraturePosition(0, 0)
-        self.shooter.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)# This should change between brake and coast modes.
+        #self.unloader.setQuadraturePosition(0, 0)
+        #self.unloader.setNeutralMode(ctre.wpilib.Spark.NeutralMode.Coast)# This should change between brake and coast modes.
         
 
         self.l_motor1 = ctre.wpi_talonsrx.WPI_TalonSRX(1)
@@ -139,7 +144,7 @@ class MyRobot(wpilib.IterativeRobot):
 
     def teleopInit(self):
         #resets printed shooter position on enable
-        self.shooter.setQuadraturePosition(0, 0)
+        #self.unloader.setQuadraturePosition(0, 0)
         self.l_motor1.setQuadraturePosition(0, 0)
         self.r_motor1.setQuadraturePosition(0, 0)
         self.l_motor2.setQuadraturePosition(0, 0)
@@ -150,6 +155,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motor1.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
         self.l_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
         self.r_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        
         
 
     def teleopPeriodic(self):
@@ -170,21 +176,21 @@ class MyRobot(wpilib.IterativeRobot):
 
         # Pulling the trigger starts the shooting/loading process, releasing stops it.
         if self.l_joy.getRawButton(1):
-            self.shooter.set(1)
+            self.unloader.set(1)
             self.auto_loop_counter += 1 # Setting it to nonzero starts it up; only increments when trigger held.
         else:
             self.auto_loop_counter = 0 # setting to zero stops below.
 
         # Now do things based on the value of the counter.
         if self.auto_loop_counter == 0:
-            self.shooter.set(0) # If zero, we are stopped.
-            self.loader.set(0)
+            self.Chute.set(0) # If zero, we are stopped.
+            self.Chute.set(0)
         elif self.auto_loop_counter > 0 and self.auto_loop_counter <= 100:
         # First two seconds shooter only is on.  Technically, we would only have to set when entering this condition, but this makes it clear.
-             self.shooter.set(1)
+             self.Chute.set(1)
         else:
         # Executed if self.auto_loop_counter is > 100, or trigger held longer than 2 seconds.
-             self.shooter.set(1)
+             self.Chute.set(1)
              self.loader.set(0.5)
         
         self.auto_loop_counter +=1
