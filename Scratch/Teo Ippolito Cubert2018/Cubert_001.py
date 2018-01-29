@@ -81,7 +81,6 @@ class MyRobot(wpilib.IterativeRobot):
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.auto_loop_counter = 0
-        self.shooter.setQuadraturePosition(0, 0)
         self.l_motor1.setQuadraturePosition(0, 0)
         self.r_motor1.setQuadraturePosition(0, 0)
         self.l_motor1.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Brake)
@@ -94,7 +93,7 @@ class MyRobot(wpilib.IterativeRobot):
         
         #self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         #self.logger.info(self.gameData)
-        self.gameData = 'LRL'
+        self.gameData = 'RRL'
 
 		
     
@@ -102,14 +101,14 @@ class MyRobot(wpilib.IterativeRobot):
     def autonomousPeriodic(self):
         
         if(self.gameData[0] == 'L'):    	
-            self.AutoPL(self)
+            self.AutoPL()
             
         else: 
-            self.AutoPR(self)
+            self.AutoPR()
 
     def AutoPL(self):
 
-        if self.r_motor1.getPosition()> -2000 and self.auto_loop_counter <200:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <200:
             self.drive.drive(-0.5,0)
 
         else:
@@ -119,12 +118,12 @@ class MyRobot(wpilib.IterativeRobot):
 
         if self.auto_loop_counter % 50 == 0:
             # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.l_motor1.getPosition() , self.r_motor1.getPosition())
+            print(self.auto_loop_counter, ' pos: ', self.l_motor1.getQuadraturePosition() , self.r_motor1.getQuadraturePosition())
         #This counter runs 50 times a second
 
     def AutoPR(self):
         
-        if self.r_motor1.getPosition()> -2000 and self.auto_loop_counter <200:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <200:
             self.drive.drive(-0.5,0)
 
         else:
@@ -134,7 +133,7 @@ class MyRobot(wpilib.IterativeRobot):
 
         if self.auto_loop_counter % 50 == 0:
             # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.l_motor1.getPosition() , self.r_motor2.getPosition())
+            print(self.auto_loop_counter, ' pos: ', self.l_motor1.getQuadraturePosition() , self.r_motor2.getQuadraturePosition())
         #This counter runs 50 times a second
             
             
@@ -163,37 +162,46 @@ class MyRobot(wpilib.IterativeRobot):
         
         self.drive.tankDrive(self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
         
-        if self.l_joy.getRawButton(2) or self.r_joy.getRawButton(2):
-            self.climber.set(1)
-        else:
-            self.climber.set(0)
+       # if self.l_joy.getRawButton(4) or self.r_joy.getRawButton(4):
+        #    self.climber.set(1)
+       # else:
+            #self.climber.set(0)
 
-        if self.l_joy.getRawButton(3) or self.r_joy.getRawButton(3):
-            self.loader.set(-0.5)
+        if self.r_joy.getRawButton(3):
+            self.loader.set(1)
+            self.Chute.set(1)
         else:
             self.loader.set(0)
+            self.Chute.set(0)
+
+
+        if self.l_joy.getRawButton(3):
+            self.loader.set(-1)
+            self.Chute.set(-1)
+        else:
+            self.loader.set(0)
+            self.Chute.set(0)
+
+       
+       
             
 
-        # Pulling the trigger starts the shooting/loading process, releasing stops it.
-        if self.l_joy.getRawButton(1):
-            self.unloader.set(1)
-            self.auto_loop_counter += 1 # Setting it to nonzero starts it up; only increments when trigger held.
-        else:
-            self.auto_loop_counter = 0 # setting to zero stops below.
+
+            
 
         # Now do things based on the value of the counter.
-        if self.auto_loop_counter == 0:
-            self.Chute.set(0) # If zero, we are stopped.
-            self.Chute.set(0)
-        elif self.auto_loop_counter > 0 and self.auto_loop_counter <= 100:
+       # if self.auto_loop_counter == 0:
+        #    self.Chute.set(0) # If zero, we are stopped.
+         #   self.Chute.set(0)
+       # elif self.auto_loop_counter > 0 and self.auto_loop_counter <= 100:
         # First two seconds shooter only is on.  Technically, we would only have to set when entering this condition, but this makes it clear.
-             self.Chute.set(1)
-        else:
+         #    self.Chute.set(1)
+        #else:
         # Executed if self.auto_loop_counter is > 100, or trigger held longer than 2 seconds.
-             self.Chute.set(1)
-             self.loader.set(0.5)
+          #   self.Chute.set(1)
+           #  self.loader.set(0.5)
         
-        self.auto_loop_counter +=1
+       # self.auto_loop_counter +=1
 
         """
         if self.mode == 0:
