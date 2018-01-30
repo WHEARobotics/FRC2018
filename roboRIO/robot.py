@@ -39,18 +39,22 @@ class MyRobot(wpilib.IterativeRobot):
 ##        # resets shooter position on startup
 ##        #self.shooter.setPosition(0)
 ##        #self.shooter.enableBrakeMode(False)# This should change between brake and coast modes.
-        
+        self.l_loader = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.r_loader = ctre.wpi_talonsrx.WPI_TalonSRX(5)
+        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
+        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(7)
+        self.climb = ctre.wpi_talonsrx.WPI_TalonSRX(8)
 
-        self.l_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(1)
+        self.l_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(0)
         self.l_motorFront.setInverted(True)
 
-        self.l_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(2)
+        self.l_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(1)
         self.l_motorBack.setInverted(True)
 
-        self.r_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(3)
+        self.r_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(2)
         self.r_motorFront.setInverted(True)
         
-        self.r_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.r_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(3)
         self.r_motorBack.setInverted(True)
 
         
@@ -74,7 +78,7 @@ class MyRobot(wpilib.IterativeRobot):
         #self.climb = wpilib.Spark(2)
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
-        self.drive = DifferentialDrive(self.left, self.right)
+        self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
         self.counter = 0
         #wpilib.CameraServer.launch()
         #IP for camera server: http://10.38.81.101:1181/
@@ -119,11 +123,11 @@ class MyRobot(wpilib.IterativeRobot):
 ##        self.r_motor.setPosition(0)
 ##        self.auto_loop_counter = 0
         
-        self.l_motorFront.enableBrakeMode(False)
-        self.l_motorBack.enableBrakeMode(False)
+        self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
-        self.r_motorFront.enableBrakeMode(False)
-        self.r_motorBack.enableBrakeMode(False)
+        self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
         
 
     def teleopPeriodic(self):
