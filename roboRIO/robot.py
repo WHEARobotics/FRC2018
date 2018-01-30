@@ -39,11 +39,7 @@ class MyRobot(wpilib.IterativeRobot):
 ##        # resets shooter position on startup
 ##        #self.shooter.setPosition(0)
 ##        #self.shooter.enableBrakeMode(False)# This should change between brake and coast modes.
-        self.l_loader = ctre.wpi_talonsrx.WPI_TalonSRX(4)
-        self.r_loader = ctre.wpi_talonsrx.WPI_TalonSRX(5)
-        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
-        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(7)
-        self.climb = ctre.wpi_talonsrx.WPI_TalonSRX(8)
+        
 
         self.l_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(0)
         self.l_motorFront.setInverted(True)
@@ -123,10 +119,10 @@ class MyRobot(wpilib.IterativeRobot):
 ##        self.r_motor.setPosition(0)
 ##        self.auto_loop_counter = 0
         
-        self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
-        self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
         
 
@@ -137,41 +133,41 @@ class MyRobot(wpilib.IterativeRobot):
 
         
         #Right Joystick Intake for Loader and Chute
-        if self.r_joy.getRawButton(3):
-            self.l_loader.set(1) 
-            self.l_chute.set(1)
-            self.r_loader.set(1)
-            self.r_chute.set(1)
-        else:
-            self.l_loader.set(0) 
-            self.l_chute.set(0)
-            self.r_loader.set(0)
-            self.r_chute.set(0)
-
-    
-        #Left Joystick Outtake for Loader and Chute
-        if self.l_joy.getRawButton(3):
-            self.l_loader.set(-1) 
-            self.l_chute.set(-1)
-            self.r_loader.set(-1)
-            self.r_chute.set(-1)
-        else:
-            self.l_loader.set(0)
-            self.l_chute.set(0)
-            self.r_loader.set(0)
-            self.r_chute.set(0)
-            
-            
-        #Right Joystick Climb Up, Left Joystick Climb Down
-        if self.r_joy.getRawButton(2):
-            self.climb.set(1)
-        else:
-            self.climb.set(0)
-
-        if self.l_joy.getRawButton(2):
-            self.climb.set(-1)
-        else:
-            self.climb.set(0)
+##        if self.r_joy.getRawButton(3):
+##            self.l_loader.set(1) 
+##            self.l_chute.set(1)
+##            self.r_loader.set(1)
+##            self.r_chute.set(1)
+##        else:
+##            self.l_loader.set(0) 
+##            self.l_chute.set(0)
+##            self.r_loader.set(0)
+##            self.r_chute.set(0)
+##
+##    
+##        #Left Joystick Outtake for Loader and Chute
+##        if self.l_joy.getRawButton(3):
+##            self.l_loader.set(-1) 
+##            self.l_chute.set(-1)
+##            self.r_loader.set(-1)
+##            self.r_chute.set(-1)
+##        else:
+##            self.l_loader.set(0)
+##            self.l_chute.set(0)
+##            self.r_loader.set(0)
+##            self.r_chute.set(0)
+##            
+##            
+##        #Right Joystick Climb Up, Left Joystick Climb Down
+##        if self.r_joy.getRawButton(2):
+##            self.climb.set(1)
+##        else:
+##            self.climb.set(0)
+##
+##        if self.l_joy.getRawButton(2):
+##            self.climb.set(-1)
+##        else:
+##            self.climb.set(0)
         
        
         
