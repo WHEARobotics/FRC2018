@@ -33,14 +33,14 @@ class MyRobot(wpilib.IterativeRobot):
         #self.unloader.setNeutralMode(ctre.wpilib.Spark.NeutralMode.Coast)# This should change between brake and coast modes.
         
 
-        self.l_motor1 = ctre.wpi_talonsrx.WPI_TalonSRX(1)
-        self.l_motor2 = ctre.wpi_talonsrx.WPI_TalonSRX(2) 
-        self.l_motor1.setInverted(True)
-        self.l_motor2.setInverted(True)
-        self.r_motor1 = ctre.wpi_talonsrx.WPI_TalonSRX(3)
-        self.r_motor2 = ctre.wpi_talonsrx.WPI_TalonSRX(4)
-        self.r_motor1.setInverted(True)
-        self.r_motor2.setInverted(True)
+        self.l_motor1 = ctre.wpi_talonsrx.WPI_TalonSRX(0)
+        self.l_motor2 = ctre.wpi_talonsrx.WPI_TalonSRX(1) 
+        self.l_motor1.setInverted(False)
+        self.l_motor2.setInverted(False)
+        self.r_motor1 = ctre.wpi_talonsrx.WPI_TalonSRX(2)
+        self.r_motor2 = ctre.wpi_talonsrx.WPI_TalonSRX(3)
+        self.r_motor1.setInverted(False)
+        self.r_motor2.setInverted(False)
         # Configure shooter motor controller.
          # Create a CANTalon object.
         self.l_motor1.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
@@ -66,9 +66,9 @@ class MyRobot(wpilib.IterativeRobot):
         #self.stick = wpilib.Joystick(0)
         self.l_joy = wpilib.Joystick(0)
         self.r_joy = wpilib.Joystick(1)
+        self.loader = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.climber = wpilib.Spark(6)
         self.loader = ctre.wpi_talonsrx.WPI_TalonSRX(5)
-        self.climber = wpilib.Spark(7)
-        self.loader = ctre.wpi_talonsrx.WPI_TalonSRX(6)
         self.drive = wpilib.RobotDrive(self.l_motor1 , self.l_motor2 , self.r_motor1 , self.r_motor2)
         self.counter = 0
         self.mode = 0
@@ -91,9 +91,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Brake)
 
         
-        #self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
-        #self.logger.info(self.gameData)
-        self.gameData = 'RRL'
+        self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
+        self.logger.info(self.gameData)
+
 
 		
     
