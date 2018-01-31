@@ -44,13 +44,14 @@ class MyRobot(wpilib.IterativeRobot):
         # Configure shooter motor controller.
          # Create a CANTalon object.
         self.l_motor1.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.l_motor1.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        #self.l_motor1.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
         self.l_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.l_motor2.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        #self.l_motor2.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
         self.l_motor1.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.r_motor1.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        #self.r_motor1.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
         self.l_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.r_motor2.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)# Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        #self.r_motor2.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)# Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        
         # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
         # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
         #self.l_motor1.configEncoderCodesPerRev(48)
