@@ -22,9 +22,9 @@ class MyRobot(wpilib.IterativeRobot):
         """
         
         # Configure shooter motor controller.
-        self.Chute = wpilib.Spark(8)
-        self.Chute = wpilib.Spark(9)# Create a CANTalon object.
-        #self.unloader.configSelectedFeedbackSensor(wpilib.Spark.FeedbackDevice.QuadEncoder , 0 , 0) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
+        self.Chute = ctre.wpi_talonsrx.WPI_TalonSRX(8)
+        self.Chute = ctre.wpi_talonsrx.WPI_TalonSRX(9)# Create a CANTalon object.
+        self.Chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0 , 0) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
         # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
         # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
         #self.shooter.configEncoderCodesPerRev(48)
@@ -92,7 +92,10 @@ class MyRobot(wpilib.IterativeRobot):
 
         
         self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
-        self.logger.info(self.gameData)
+        if not self.gameData:
+            self.gameData = 'LLL'
+            msg = 'Empty Game Specific Message,Setting It To [0]'.format(self.gameData)
+            self.logger.warn(msg)
 
 
 		

@@ -42,16 +42,20 @@ class MyRobot(wpilib.IterativeRobot):
         
 
         self.l_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(0)
-        self.l_motorFront.setInverted(True)
+        self.l_motorFront.setInverted(False)
 
         self.l_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(1)
-        self.l_motorBack.setInverted(True)
+        self.l_motorBack.setInverted(False)
 
         self.r_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(2)
-        self.r_motorFront.setInverted(True)
+        self.r_motorFront.setInverted(False)
         
         self.r_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(3)
-        self.r_motorBack.setInverted(True)
+        self.r_motorBack.setInverted(False)
+
+        self.r_Chute = wpilib.Spark(4)
+
+        self.l_Chute = wpilib.Spark(5)
 
         
 ##        # Configure shooter motor controller.
@@ -131,7 +135,21 @@ class MyRobot(wpilib.IterativeRobot):
         
         self.drive.tankDrive(self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
 
-        
+        if self.r_joy.getRawButton(3):
+            self.loader.set(1)
+            self.Chute.set(1)
+        else:
+            self.loader.set(0)
+            self.Chute.set(0)
+
+
+        if self.l_joy.getRawButton(3):
+            self.loader.set(-1)
+            self.Chute.set(-1)
+        else:
+            self.loader.set(0)
+            self.Chute.set(0)
+            
         #Right Joystick Intake for Loader and Chute
 ##        if self.r_joy.getRawButton(3):
 ##            self.l_loader.set(1) 
