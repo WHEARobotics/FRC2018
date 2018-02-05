@@ -29,18 +29,8 @@ class MyRobot(wpilib.IterativeRobot):
         2. Climb Down
         3. Loader Outtake
         """
-        
-##        # Configure shooter motor controller.
-##        #self.shooter = ctre.wpi_talonsrx.WPI_TalonSRX(3) # Create a CANTalon object.
-##        #self.shooter.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
-##        # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
-##        # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
-##        #self.shooter.configEncoderCodesPerRev(48)
-##        # resets shooter position on startup
-##        #self.shooter.setPosition(0)
-##        #self.shooter.enableBrakeMode(False)# This should change between brake and coast modes.
-        
-
+    
+        #Here is the encoder setup for the 4 motor drivetrain
         self.l_motorFront = ctre.wpi_talonsrx.WPI_TalonSRX(0)
         self.l_motorFront.setInverted(False)
 
@@ -53,28 +43,52 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(3)
         self.r_motorBack.setInverted(False)
 
+<<<<<<< HEAD
         self.r_Chute = wpilib.Spark(4)
 
         self.l_Chute = wpilib.Spark(5)
+=======
+        self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
+        self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+
+        self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
+        self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+
+        self.l_motorFront.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        self.l_motorBack.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+
+        self.r_motorFront.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        self.r_motorBack.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+
+        self.l_motorFront.setQuadraturePosition(0, 0)
+        self.l_motorBack.setQuadraturePosition(0, 0)
+
+        self.r_motorFront.setQuadraturePosition(0, 0)
+        self.l_motorBack.setQuadraturePosition(0, 0)
+
+
+        #Here is the encoder setup for the left and right chute motors
+        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(5)
+        self.l_chute.setInverted(False)
+        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
+        self.r_chute.setInverted(False)
+
+        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+
+        self.l_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+        self.r_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+
+        self.l_chute.setQuadraturePosition(0, 0)
+        self.r_chute.setQuadraturePosition(0, 0)
+>>>>>>> b97f9354239438a6d644d4c0c7903d2e83392ca5
 
         
-##        # Configure shooter motor controller.
-##         # Create a CANTalon object.
-##        self.l_motor.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder)
-##        self.r_motor.setFeedbackDevice(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder)# Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
-##        # I thought the encoder was 20 pulses per revolution per phase, which would require "80" as an argument below, but after trying it, it looks like there are 12.
-##        # Setting this parameter changes things so getPosition() returns decimal revolutions, and getSpeed() returns RPM.
-##        # resets shooter position on startup
-##        self.l_motor.setPosition(0)
-##        self.r_motor.setPosition(0)
-        
-        #self.stick = wpilib.Joystick(0)
+        #This is the setup for the drive groups and loaders
         self.l_joy = wpilib.Joystick(0)
         self.r_joy = wpilib.Joystick(1)
-        #self.l_loader = ctre.wpi_talonsrx.WPI_TalonSRX(5)
-        #self.r_loader = ctre.wpi_talonsrx.WPI_TalonSRX(6)
-        #self.l_chute = wpilib.Spark(0)
-        #self.r_chute = wpilib.Spark(1)
+        self.l_loader = wpilib.Spark(0)
+        self.r_loader = wpilib.Spark(1)
         #self.climb = wpilib.Spark(2)
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
@@ -117,18 +131,23 @@ class MyRobot(wpilib.IterativeRobot):
        
     def teleopInit(self):
         
-##        #resets printed shooter position on enable
-##        self.shooter.setPosition(0)
-##        self.l_motor.setPosition(0)
-##        self.r_motor.setPosition(0)
-##        self.auto_loop_counter = 0
-        
         self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
         self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        
+
+        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+
+        self.l_motorFront.setQuadraturePosition(0, 0)
+        self.l_motorBack.setQuadraturePosition(0, 0)
+
+        self.r_motorFront.setQuadraturePosition(0, 0)
+        self.l_motorBack.setQuadraturePosition(0, 0)
+
+        self.l_chute.setQuadraturePosition(0, 0)
+        self.r_chute.setQuadraturePosition(0, 0)
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
@@ -151,29 +170,29 @@ class MyRobot(wpilib.IterativeRobot):
             self.Chute.set(0)
             
         #Right Joystick Intake for Loader and Chute
-##        if self.r_joy.getRawButton(3):
-##            self.l_loader.set(1) 
-##            self.l_chute.set(1)
-##            self.r_loader.set(1)
-##            self.r_chute.set(1)
-##        else:
-##            self.l_loader.set(0) 
-##            self.l_chute.set(0)
-##            self.r_loader.set(0)
-##            self.r_chute.set(0)
-##
-##    
-##        #Left Joystick Outtake for Loader and Chute
-##        if self.l_joy.getRawButton(3):
-##            self.l_loader.set(-1) 
-##            self.l_chute.set(-1)
-##            self.r_loader.set(-1)
-##            self.r_chute.set(-1)
-##        else:
-##            self.l_loader.set(0)
-##            self.l_chute.set(0)
-##            self.r_loader.set(0)
-##            self.r_chute.set(0)
+        if self.r_joy.getRawButton(3):
+            self.l_loader.set(1) 
+            self.l_chute.set(1)
+            self.r_loader.set(1)
+            self.r_chute.set(1)
+        else:
+            self.l_loader.set(0) 
+            self.l_chute.set(0)
+            self.r_loader.set(0)
+            self.r_chute.set(0)
+
+    
+        #Left Joystick Outtake for Loader and Chute
+        if self.l_joy.getRawButton(3):
+            self.l_loader.set(-1) 
+            self.l_chute.set(-1)
+            self.r_loader.set(-1)
+            self.r_chute.set(-1)
+        else:
+            self.l_loader.set(0)
+            self.l_chute.set(0)
+            self.r_loader.set(0)
+            self.r_chute.set(0)
 ##            
 ##            
 ##        #Right Joystick Climb Up, Left Joystick Climb Down
@@ -190,17 +209,18 @@ class MyRobot(wpilib.IterativeRobot):
        
         
 ##        self.auto_loop_counter +=1
-##
-##        
-##        self.counter += 1
-##        if self.counter % 90 == 0:
-##            # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-##            print(self.counter, ' pos: ', self.l_motor.getPosition() , self.r_motor.getPosition())
-##            
-##
-##            
-##            print(self.counter)
-##            print(self.counter, ' axis: ', self.l_joy.getRawAxis(2) and self.r_joy.getRawAxis(2), ' pos: ', self.shooter.getPosition(), ' rpm: ', self.shooter.getSpeed())
+
+        self.counter += 1
+        if self.counter % 90 == 0:
+            # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
+            print(self.counter, ' pos: ', self.l_motorFront.getQuadraturePosition() , self.r_motorFront.getQuadraturePosition())
+            
+
+            """
+            print(self.counter)
+            """
+            print(self.counter, ' axis: ', self.l_joy.getRawAxis(1) and self.r_joy.getRawAxis(1), ' pos: ', self.l_chute.getQuadraturePosition(), ' rpm: ', self.l_chute.getQuadratureVelocity(),' pos: ', self.r_chute.getQuadraturePosition(), ' rpm: ', self.r_chute.getQuadratureVelocity())
+        
             
         
     def testPeriodic(self):
