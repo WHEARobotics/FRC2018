@@ -17,7 +17,7 @@ class MyRobot(wpilib.IterativeRobot):
         """
         
         # Configure shooter motor controller.
-        self.Gyro = wpilib.ADXRS450_Gyro()
+        #self.Gyro = wpilib.ADXRS450_Gyro()
         self.Chute = ctre.wpi_talonsrx.WPI_TalonSRX(7)
         self.Chute = ctre.wpi_talonsrx.WPI_TalonSRX(8)# Create a CANTalon object.
         self.Chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0 , 0) # Choose an encoder as a feedback device.  The default should be QuadEncoder already, but might as well make sure.
@@ -81,7 +81,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motor2.setQuadraturePosition(0, 0)
         self.l_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Brake)
         self.r_motor2.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Brake)
-        self.Gyro.reset()
+        #self.Gyro.reset()
         
         self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if not self.gameData:
@@ -103,7 +103,7 @@ class MyRobot(wpilib.IterativeRobot):
 
     def AutoPL(self):
 
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <50:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <10:
             self.drive.drive(-0.5,0)
 
         else:
@@ -111,14 +111,14 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.auto_loop_counter +=1
 
-        if self.auto_loop_counter % 50 == 0:
+        #if self.auto_loop_counter % 50 == 0:
             # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
-        #This counter runs 50 times a second
+            #print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
+            #This counter runs 50 times a second
 
     def AutoPR(self):
         
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <50:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <10:
             self.drive.drive(-0.5,0)
 
         else:
@@ -126,9 +126,9 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.auto_loop_counter +=1
 
-        if self.auto_loop_counter % 50 == 0:
+       # if self.auto_loop_counter % 50 == 0:
             # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
+            #print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
         #This counter runs 50 times a seconddef autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.auto_loop_counter = 0
@@ -149,48 +149,6 @@ class MyRobot(wpilib.IterativeRobot):
             self.logger.warn(msg)
 
 
-		
-    
-
-    def autonomousPeriodic(self):
-        
-        if(self.gameData[0] == 'L'):    	
-            self.AutoPL()
-            
-        else: 
-            self.AutoPR()
-
-    def AutoPL(self):
-
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <100:
-            self.drive.drive(-0.5,0)
-
-        else:
-            self.drive.drive(0,0)
-
-        self.auto_loop_counter +=1
-
-        if self.auto_loop_counter % 50 == 0:
-            # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
-        #This counter runs 50 times a second
-
-        
-
-    def AutoPR(self):
-        
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <100:
-            self.drive.drive(-0.5,0)
-
-        else:
-            self.drive.drive(0,0)
-
-        self.auto_loop_counter +=1
-
-        if self.auto_loop_counter % 50 == 0:
-            # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
-            print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
-        #This counter runs 50 times a second
         
         
 if __name__ == "__main__":
