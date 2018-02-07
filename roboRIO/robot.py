@@ -50,32 +50,27 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
         self.l_motorFront.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-        self.l_motorBack.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-
         self.r_motorFront.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-        self.r_motorBack.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
 
         self.l_motorFront.setQuadraturePosition(0, 0)
-        self.l_motorBack.setQuadraturePosition(0, 0)
-
         self.r_motorFront.setQuadraturePosition(0, 0)
-        self.l_motorBack.setQuadraturePosition(0, 0)
+        
 
 
         #Here is the encoder setup for the left and right chute motors
-        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(5)
-        self.l_chute.setInverted(False)
-        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
-        self.r_chute.setInverted(False)
-
-        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-
-        self.l_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-        self.r_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-
-        self.l_chute.setQuadraturePosition(0, 0)
-        self.r_chute.setQuadraturePosition(0, 0)
+##        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(5)
+##        self.l_chute.setInverted(False)
+##        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
+##        self.r_chute.setInverted(False)
+##
+##        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+##        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+##
+##        self.l_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+##        self.r_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+##
+##        self.l_chute.setQuadraturePosition(0, 0)
+##        self.r_chute.setQuadraturePosition(0, 0)
 
         
         #This is the setup for the drive groups and loaders
@@ -87,6 +82,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
         self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
+        #self.xbox = wpilib.XboxController(0)
         self.counter = 0
         #wpilib.CameraServer.launch()
         #IP for camera server: http://10.38.81.101:1181/
@@ -131,48 +127,45 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.r_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
-        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
-        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+##        self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
+##        self.r_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
         self.l_motorFront.setQuadraturePosition(0, 0)
-        self.l_motorBack.setQuadraturePosition(0, 0)
-
         self.r_motorFront.setQuadraturePosition(0, 0)
-        self.l_motorBack.setQuadraturePosition(0, 0)
 
-        self.l_chute.setQuadraturePosition(0, 0)
-        self.r_chute.setQuadraturePosition(0, 0)
+##        self.l_chute.setQuadraturePosition(0, 0)
+##        self.r_chute.setQuadraturePosition(0, 0)
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         
         self.drive.tankDrive(self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
-
+        #self.tankDrive = (self.xbox.getRawAxis(5) , self.xbox.getRawAxis(1))
         
         #Right Joystick Intake for Loader and Chute
-        if self.r_joy.getRawButton(3):
-            self.l_loader.set(1) 
-            self.l_chute.set(1)
-            self.r_loader.set(1)
-            self.r_chute.set(1)
-        else:
-            self.l_loader.set(0) 
-            self.l_chute.set(0)
-            self.r_loader.set(0)
-            self.r_chute.set(0)
-
-    
-        #Left Joystick Outtake for Loader and Chute
-        if self.l_joy.getRawButton(3):
-            self.l_loader.set(-1) 
-            self.l_chute.set(-1)
-            self.r_loader.set(-1)
-            self.r_chute.set(-1)
-        else:
-            self.l_loader.set(0)
-            self.l_chute.set(0)
-            self.r_loader.set(0)
-            self.r_chute.set(0)
+##        if self.r_joy.getRawButton(3):
+##            self.l_loader.set(1) 
+##            self.l_chute.set(1)
+##            self.r_loader.set(1)
+##            self.r_chute.set(1)
+##        else:
+##            self.l_loader.set(0) 
+##            self.l_chute.set(0)
+##            self.r_loader.set(0)
+##            self.r_chute.set(0)
+##
+##    
+##        #Left Joystick Outtake for Loader and Chute
+##        if self.l_joy.getRawButton(3):
+##            self.l_loader.set(-1) 
+##            self.l_chute.set(-1)
+##            self.r_loader.set(-1)
+##            self.r_chute.set(-1)
+##        else:
+##            self.l_loader.set(0)
+##            self.l_chute.set(0)
+##            self.r_loader.set(0)
+##            self.r_chute.set(0)
 ##            
 ##            
 ##        #Right Joystick Climb Up, Left Joystick Climb Down
@@ -192,21 +185,10 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.counter += 1
         if self.counter % 90 == 0:
-            # Uncomment whichever line you want to use.  Need to have a shooter to use the second one.
             print(self.counter, ' pos: ', self.l_motorFront.getQuadraturePosition() , self.r_motorFront.getQuadraturePosition())
-            
-
-            """
-            print(self.counter)
-            """
-            print(self.counter, ' axis: ', self.l_joy.getRawAxis(1) and self.r_joy.getRawAxis(1), ' pos: ', self.l_chute.getQuadraturePosition(), ' rpm: ', self.l_chute.getQuadratureVelocity(),' pos: ', self.r_chute.getQuadraturePosition(), ' rpm: ', self.r_chute.getQuadratureVelocity())
-        
-            
-        
-    def testPeriodic(self):
-        """This function is called periodically during test mode."""
-        #wpilib.LiveWindow.run()
-        pass
+            print(self.counter, ' axis: ', self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
+##            print(self.counter, ' pos: ', self.l_chute.getQuadraturePosition(), ' rpm: ', self.l_chute.getQuadratureVelocity())
+##            print(self.counter, ' pos: ', self.r_chute.getQuadraturePosition(), ' rpm: ', self.r_chute.getQuadratureVelocity())
         
 
 
