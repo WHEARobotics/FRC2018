@@ -103,7 +103,7 @@ class MyRobot(wpilib.IterativeRobot):
 
     def AutoPL(self):
 
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <50:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <200:
             self.drive.drive(-0.5,0)
 
         else:
@@ -118,7 +118,7 @@ class MyRobot(wpilib.IterativeRobot):
 
     def AutoPR(self):
         
-        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <50:
+        if self.r_motor1.getQuadraturePosition()> -2000 and self.auto_loop_counter <200:
             self.drive.drive(-0.5,0)
 
         else:

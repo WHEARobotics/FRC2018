@@ -43,6 +43,11 @@ class MyRobot(wpilib.IterativeRobot):
         self.r_motorBack = ctre.wpi_talonsrx.WPI_TalonSRX(3)
         self.r_motorBack.setInverted(False)
 
+<<<<<<< HEAD
+        self.r_Chute = wpilib.Spark(4)
+
+        self.l_Chute = wpilib.Spark(5)
+=======
         self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
