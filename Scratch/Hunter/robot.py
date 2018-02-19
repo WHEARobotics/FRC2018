@@ -19,6 +19,7 @@ class MyRobot(wpilib.IterativeRobot):
 
         """
         Button Map for Dual Joysticks
+
         Left Joystick (Intake):
         1. Chute + Loader (100%)
         2. Climb Up
@@ -86,6 +87,14 @@ class MyRobot(wpilib.IterativeRobot):
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
         self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
+        self.auto_switch0 = wpilib.DigitalInput(0)
+        self.auto_switch1 = wpilib.DigitalInput(1)
+        self.auto_switch2 = wpilib.DigitalInput(2)
+        self.auto_switch3 = wpilib.DigitalInput(3)
+        self.optical = wpilib.DigitalInput(4)
+        self.gyro = wpilib.ADXRS450_Gyro(0)
+        self.gyro.calibrate()
+        self.gyro.reset()
 
 ##        self.xbox = wpilib.XboxController(0)
 ##        self.accelerometer = wpilib.BuiltInAccelerometer(wpilib.BuiltInAccelerometer.Range.k2G)
@@ -114,8 +123,6 @@ class MyRobot(wpilib.IterativeRobot):
         self.l_chute.setQuadraturePosition(0, 0)
         self.r_chute.setQuadraturePosition(0, 0)
 
-##        self.Gyro.reset()
-
         self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if not self.gameData:
             self.gameData = 'LLL'
@@ -124,13 +131,10 @@ class MyRobot(wpilib.IterativeRobot):
             
         self.start = default_timer()
 
-        
-    
        
 
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
-##        print (self.vel = self.vel + self.grav * self.accelerometer.getX()) 
         if(self.gameData[0] == 'L'):    	
             self.AutoPL()
             
@@ -148,10 +152,6 @@ class MyRobot(wpilib.IterativeRobot):
 
         else:
             self.drive.curvatureDrive(0.0,0,False)
-            
-
-##        if self.auto_loop_counter % 50 == 0:
-##            print(self.auto_loop_counter, ' pos: ', self.Gyro.getAngle() , self.Gyro.getRate())
 
         self.auto_loop_counter +=1
 
@@ -170,11 +170,10 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.auto_loop_counter +=1
 
-        
      
        
     def teleopInit(self):
-        """This function is run once each time the robot enters operator control mode."""
+        """This function is run once each time the robot enters teleop mode."""
         self.l_motorFront.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast) 
         self.l_motorBack.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
 
@@ -196,7 +195,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.drive.tankDrive(self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
         #self.tankDrive = (self.xbox.getRawAxis(5) , self.xbox.getRawAxis(1))
         
-        #Right Joystick Intake for Loader and Chute(Ground Pickup)
+        #Right Joystick Intake for Loader and Chute(Ground Pickup 100%)
         if self.r_joy.getRawButton(1):
             self.l_loader.set(1) 
             self.l_chute.set(1)
@@ -209,7 +208,7 @@ class MyRobot(wpilib.IterativeRobot):
             self.r_chute.set(0)
 
     
-        #Left Joystick Outtake for Loader and Chute(Ground Pickup)
+        #Left Joystick Outtake for Loader and Chute(Ground Pickup 100%)
         if self.l_joy.getRawButton(1):
             self.l_loader.set(-1) 
             self.l_chute.set(-1)
@@ -222,23 +221,6 @@ class MyRobot(wpilib.IterativeRobot):
             self.r_chute.set(0)
 
 
-        #Right Joystick Intake for Chute(Transfer Pickup)
-        if self.r_joy.getRawButton(4):
-            self.l_chute.set(1)
-            self.r_chute.set(1)
-        else:
-            self.l_chute.set(0)
-            self.r_chute.set(0)
-
-    
-        #Left Joystick Outtake for Chute(Transfer Pickup)
-        if self.l_joy.getRawButton(4):
-            self.l_chute.set(-1)
-            self.r_chute.set(-1)
-        else:
-            self.l_chute.set(0)
-            self.r_chute.set(0)
-            
         #Right Joystick Climb Up, Left Joystick Climb Down
         if self.r_joy.getRawButton(2):
             self.climb.set(1)
@@ -249,8 +231,70 @@ class MyRobot(wpilib.IterativeRobot):
             self.climb.set(-1)
         else:
             self.climb.set(0)
+
+
+        #Right Joystick Intake for Loader and Chute(Ground Pickup 50%)
+        if self.r_joy.getRawButton(3):
+            self.l_loader.set(0.5) 
+            self.l_chute.set(0.5)
+            self.r_loader.set(0.5)
+            self.r_chute.set(0.5)
+        else:
+            self.l_loader.set(0) 
+            self.l_chute.set(0)
+            self.r_loader.set(0)
+            self.r_chute.set(0)
+
+    
+        #Left Joystick Outtake for Loader and Chute(Ground Pickup 50%)
+        if self.l_joy.getRawButton(3):
+            self.l_loader.set(-0.5) 
+            self.l_chute.set(-0.5)
+            self.r_loader.set(-0.5)
+            self.r_chute.set(-0.5)
+        else:
+            self.l_loader.set(0)
+            self.l_chute.set(0)
+            self.r_loader.set(0)
+            self.r_chute.set(0)
+
+
+        #Right Joystick Intake for Loader(Transfer Pickup 50%)
+        if self.r_joy.getRawButton(4):
+            self.l_loader.set(0.5)
+            self.r_loader.set(0.5)
+        else:
+            self.l_loader.set(0)
+            self.r_loader.set(0)
+
+    
+        #Left Joystick Outtake for Loader(Transfer Pickup 50%)
+        if self.l_joy.getRawButton(4):
+            self.l_loader.set(-0.5)
+            self.r_loader.set(-0.5)
+        else:
+            self.l_loader.set(0)
+            self.r_loader.set(0)
+
+
+        #Right Joystick Intake for Chute(Transfer Pickup 50%)
+        if self.r_joy.getRawButton(5):
+            self.l_chute.set(0.5)
+            self.r_chute.set(0.5)
+        else:
+            self.l_chute.set(0)
+            self.r_chute.set(0)
+
+    
+        #Left Joystick Outtake for Chute(Transfer Pickup 50%)
+        if self.l_joy.getRawButton(5):
+            self.l_chute.set(-0.5)
+            self.r_chute.set(-0.5)
+        else:
+            self.l_chute.set(0)
+            self.r_chute.set(0)
+
         
-       
         
         self.auto_loop_counter +=1
 
@@ -264,8 +308,32 @@ class MyRobot(wpilib.IterativeRobot):
             msg = 'Velocity of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadratureVelocity() , self.r_chute.getQuadratureVelocity())
             self.logger.info(msg)
 
+        if self.counter % 100 == 0:
+            msg = 'Posistion of Auto Switch {0}'.format(self.getAutoSwitch())
+
+            msg = 'Gyro Angle and Gyro Rate {0} {1}'.format(self.Gyro.getAngle() , self.Gyro.getRate())
+            self.logger.info(msg)
+            
 ##          msg = 'Acceleration of X + Y + Z Axes {0: 7.4f} {1: 7.4f} {2: 7.4f}'.format(self.accelerometer.getX() , self.accelerometer.getY() , self.accelerometer.getZ())
 ##          self.logger.info(msg)
+
+
+
+    def getAutoSwitch(self):
+        ret_val=0
+        if self.auto_switch0.get() == False:
+            ret_val += 1
+
+        if self.auto_switch1.get() == False:
+            ret_val += 2
+
+        if self.auto_switch2.get() == False:
+            ret_val += 4
+
+        if self.auto_switch3.get() == False:
+            ret_val += 8
+
+        return ret_val
 
 
 
