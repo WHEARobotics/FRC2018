@@ -63,9 +63,9 @@ class MyRobot(wpilib.IterativeRobot):
 
 
         #Here is the encoder setup for the left and right chute motors
-        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(5)
+        self.l_chute = ctre.wpi_talonsrx.WPI_TalonSRX(4)
         self.l_chute.setInverted(False)
-        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(6)
+        self.r_chute = ctre.wpi_talonsrx.WPI_TalonSRX(5)
         self.r_chute.setInverted(False)
 
         self.l_chute.setNeutralMode(ctre.wpi_talonsrx.WPI_TalonSRX.NeutralMode.Coast)
@@ -95,13 +95,13 @@ class MyRobot(wpilib.IterativeRobot):
         self.gyro = wpilib.ADXRS450_Gyro(0)
         self.gyro.calibrate()
         self.gyro.reset()
+        self.counter = 0
 
 ##        self.xbox = wpilib.XboxController(0)
 ##        self.accelerometer = wpilib.BuiltInAccelerometer(wpilib.BuiltInAccelerometer.Range.k2G)
 ##        self.vel = 0
 ##        self.pos = 0
-##        self.grav = 9.82
-##        self.counter = 0
+##        self.grav = 9.82      
 ##        wpilib.CameraServer.launch()
 ##        IP for camera server: http://10.38.81.101:1181/
         
@@ -296,22 +296,33 @@ class MyRobot(wpilib.IterativeRobot):
 
         
         
-        self.auto_loop_counter +=1
+##        self.auto_loop_counter +=1
 
         self.counter += 1
 
         if self.counter % 50 == 0:
             msg = 'Posistion of Left & Right Drive Motors{0} {1}'.format(self.l_motorFront.getQuadraturePosition() , self.r_motorFront.getQuadraturePosition())
+            self.logger.info(msg)
+
             msg = 'Velocity of Left & Right Drive Motors{0} {1}'.format(self.l_motorFront.getQuadratureVelocity() , self.r_motorFront.getQuadratureVelocity())
+            self.logger.info(msg)
 
             msg = 'Posistion of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadraturePosition() , self.r_chute.getQuadraturePosition())
+            self.logger.info(msg)
+
             msg = 'Velocity of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadratureVelocity() , self.r_chute.getQuadratureVelocity())
             self.logger.info(msg)
 
-        if self.counter % 100 == 0:
             msg = 'Posistion of Auto Switch {0}'.format(self.getAutoSwitch())
+            self.logger.info(msg)
 
-            msg = 'Gyro Angle and Gyro Rate {0} {1}'.format(self.Gyro.getAngle() , self.Gyro.getRate())
+            msg = 'Status of Optical Interrupter {0}'.format(self.optical.get())
+            self.logger.info(msg)
+
+            msg = 'Gyro Angle {0}'.format(self.gyro.getAngle())
+            self.logger.info(msg)
+
+            msg = 'Gyro Rate {0}'.format(self.gyro.getRate())
             self.logger.info(msg)
             
 ##          msg = 'Acceleration of X + Y + Z Axes {0: 7.4f} {1: 7.4f} {2: 7.4f}'.format(self.accelerometer.getX() , self.accelerometer.getY() , self.accelerometer.getZ())
