@@ -20,14 +20,14 @@ class MyRobot(wpilib.IterativeRobot):
         """
         Button Map for Dual Joysticks
 
-        Left Joystick (Intake):
+        Right Joystick (Intake):
         1. Chute + Loader (100%)
         2. Climb Up
         3. Chute + Loader (50%)
         4. Loader (50%)
         5. Chute (50%)
 
-        Right Joystick (Outtake):
+        Left Joystick (Outtake):
         1. Chute + Loader (-100%)
         2. Climb Down
         3. Chute + Loader (-50%)
@@ -73,16 +73,19 @@ class MyRobot(wpilib.IterativeRobot):
 
 ##        self.l_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
 ##        self.r_chute.configSelectedFeedbackSensor(ctre.wpi_talonsrx.WPI_TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
-
-        self.l_chute.setQuadraturePosition(0, 0)
-        self.r_chute.setQuadraturePosition(0, 0)
+##        self.l_chute.setQuadraturePosition(0, 0)
+##        self.r_chute.setQuadraturePosition(0, 0)
 
         
         #This is the setup for the drive groups and loaders
         self.l_joy = wpilib.Joystick(0)
         self.r_joy = wpilib.Joystick(1)
+        
         self.l_loader = wpilib.Spark(0)
+        self.l_loader.setInverted(False)
         self.r_loader = wpilib.Spark(1)
+        self.r_loader.setInverted(True)
+        
         self.climb = wpilib.Spark(2)
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
@@ -120,8 +123,8 @@ class MyRobot(wpilib.IterativeRobot):
         self.l_motorFront.setQuadraturePosition(0, 0)
         self.r_motorFront.setQuadraturePosition(0, 0)
 
-        self.l_chute.setQuadraturePosition(0, 0)
-        self.r_chute.setQuadraturePosition(0, 0)
+##        self.l_chute.setQuadraturePosition(0, 0)
+##        self.r_chute.setQuadraturePosition(0, 0)
 
         self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if not self.gameData:
@@ -186,12 +189,11 @@ class MyRobot(wpilib.IterativeRobot):
         self.l_motorFront.setQuadraturePosition(0, 0)
         self.r_motorFront.setQuadraturePosition(0, 0)
 
-        self.l_chute.setQuadraturePosition(0, 0)
-        self.r_chute.setQuadraturePosition(0, 0)
+##        self.l_chute.setQuadraturePosition(0, 0)
+##        self.r_chute.setQuadraturePosition(0, 0)
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
-        
         self.drive.tankDrive(self.l_joy.getRawAxis(1) , self.r_joy.getRawAxis(1))
         #self.tankDrive = (self.xbox.getRawAxis(5) , self.xbox.getRawAxis(1))
         
@@ -294,9 +296,7 @@ class MyRobot(wpilib.IterativeRobot):
             self.l_chute.set(0)
             self.r_chute.set(0)
 
-        
-        
-##        self.auto_loop_counter +=1
+
 
         self.counter += 1
 
@@ -307,11 +307,11 @@ class MyRobot(wpilib.IterativeRobot):
             msg = 'Velocity of Left & Right Drive Motors{0} {1}'.format(self.l_motorFront.getQuadratureVelocity() , self.r_motorFront.getQuadratureVelocity())
             self.logger.info(msg)
 
-            msg = 'Posistion of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadraturePosition() , self.r_chute.getQuadraturePosition())
-            self.logger.info(msg)
-
-            msg = 'Velocity of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadratureVelocity() , self.r_chute.getQuadratureVelocity())
-            self.logger.info(msg)
+##            msg = 'Posistion of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadraturePosition() , self.r_chute.getQuadraturePosition())
+##            self.logger.info(msg)
+##
+##            msg = 'Velocity of Left & Right Chute Motors{0} {1}'.format(self.l_chute.getQuadratureVelocity() , self.r_chute.getQuadratureVelocity())
+##            self.logger.info(msg)
 
             msg = 'Posistion of Auto Switch {0}'.format(self.getAutoSwitch())
             self.logger.info(msg)
