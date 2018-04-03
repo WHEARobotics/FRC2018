@@ -85,9 +85,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.l_loader = wpilib.Spark(0)
         self.l_loader.setInverted(False)
         self.r_loader = wpilib.Spark(1)
-        self.r_loader.setInverted(True)
+        self.r_loader.setInverted(False)
 
-        self.climb = wpilib.Spark(2)
+##        self.climb = wpilib.Spark(2)
         self.left = wpilib.SpeedControllerGroup(self.l_motorFront, self.l_motorBack)
         self.right = wpilib.SpeedControllerGroup(self.r_motorFront, self.r_motorBack)
         self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
@@ -100,6 +100,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.gyro.calibrate()
         self.gyro.reset()
         self.counter = 0
+        self.auto_loop_counter = 0
 
 ##        self.xbox = wpilib.XboxController(0)
 ##        self.accelerometer = wpilib.BuiltInAccelerometer(wpilib.BuiltInAccelerometer.Range.k2G)
@@ -128,13 +129,16 @@ class MyRobot(wpilib.IterativeRobot):
 ##        self.l_chute.setQuadraturePosition(0, 0)
 ##        self.r_chute.setQuadraturePosition(0, 0)
 
+        self.auto_loop_counter = 0
+
         self.gameData = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if not self.gameData:
             self.gameData = 'LLL'
             msg = 'Empty Game Specific Message,Setting It To [0]'.format(self.gameData)
             self.logger.warn(msg)
+        ASP = self.getAutoSwitch()
             
-        self.start = default_timer()
+##        self.start = default_timer()
 
        
 
@@ -145,36 +149,78 @@ class MyRobot(wpilib.IterativeRobot):
             
         else: 
             self.AutoPR()
+            msg = 'Posistion of Auto Switch {0}'.format(self.getAutoSwitch())
+        self.logger.info(msg)
+        
             
-
-
+    
     def AutoPL(self):
-        time = default_timer() - self.start
-        if self.l_motorFront.getQuadraturePosition() >= -1300:
-            self.drive.curvatureDrive(0.5,0,False)
-            print ('secs: ',time)
-            print ('Pos L: ',self.l_motorFront.getQuadraturePosition())
-            print ('Pos R: ',self.r_motorFront.getQuadraturePosition())
+        if self.getAutoSwitch() < 6:
+##            time = default_timer() - self.start
+            if self.auto_loop_counter <= 100:
+                self.drive.curvatureDrive(0.5,0,False)
+##                print ('secs: ',time)
+                print ('Pos L: ',self.l_motorFront.getQuadraturePosition())
+                print ('Pos R: ',self.r_motorFront.getQuadraturePosition())
 
+            elif self.auto_loop_counter <= 200:
+                self.drive.curvatureDrive(0.0,0,False)
+                self.l_chute.set(-0.5)
+                self.r_chute.set(-0.5)
+                self.l_loader.set(-0.5)
+                self.r_loader.set(-0.5)
+            else:
+                self.l_chute.set(0)
+                self.r_chute.set(0)
+                self.l_loader.set(0)
+                self.r_loader.set(0)
+        
         else:
-            self.drive.curvatureDrive(0.0,0,False)
+##            time = default_timer() - self.start
+            if self.auto_loop_counter <= 80:
+                self.drive.curvatureDrive(0.5,0,False)
+##                print ('secs: ',time)
+                print ('Pos L: ',self.l_motorFront.getQuadraturePosition())
+                print ('Pos R: ',self.r_motorFront.getQuadraturePosition())
 
+            else:
+                self.drive.curvatureDrive(0.0,0,False)                
         self.auto_loop_counter +=1
 
         
     def AutoPR(self):
-        time = default_timer() - start
-        if self.l_motorFront.getQuadraturePosition() >= -1300:
-            self.drive.curvatureDrive(0.5,0,False)
-            print ('secs: ',time)
-            print ('Pos R: ',self.r_motor1.getQuadraturePosition())
-            print ('Pos L: ',self.l_motor1.getQuadraturePosition())
+        if self.getAutoSwitch() > 10:
+##            time = default_timer() - self.start
+            if self.auto_loop_counter <= 100:
+                self.drive.curvatureDrive(0.5,0,False)
+##                print ('secs: ',time)
+                print ('Pos L: ',self.l_motorFront.getQuadraturePosition())
+                print ('Pos R: ',self.r_motorFront.getQuadraturePosition())
 
+            elif self.auto_loop_counter <= 200:
+                self.drive.curvatureDrive(0.0,0,False)
+                self.l_chute.set(-0.5)
+                self.r_chute.set(-0.5)
+                self.l_loader.set(-0.5)
+                self.r_loader.set(-0.5)
+            else:
+                self.l_chute.set(0)
+                self.r_chute.set(0)
+                self.l_loader.set(0)
+                self.r_loader.set(0)
+        
         else:
-            self.drive.curvatureDrive(0.0,0,False)
-            
+##            time = default_timer() - self.start
+            if self.auto_loop_counter <= 80:
+                self.drive.curvatureDrive(0.5,0,False)
+##                print ('secs: ',time)
+                print ('Pos L: ',self.l_motorFront.getQuadraturePosition())
+                print ('Pos R: ',self.r_motorFront.getQuadraturePosition())
 
+            else:
+                self.drive.curvatureDrive(0.0,0,False)                
         self.auto_loop_counter +=1
+    
 
 
     
@@ -227,15 +273,15 @@ class MyRobot(wpilib.IterativeRobot):
 
 
         #Right Joystick Climb Up, Left Joystick Climb Down
-        if self.r_joy.getRawButton(2):
-            self.climb.set(1)
-        else:
-            self.climb.set(0)
-
-        if self.l_joy.getRawButton(2):
-            self.climb.set(-1)
-        else:
-            self.climb.set(0)
+##        if self.r_joy.getRawButton(2):
+##            self.climb.set(1)
+##        else:
+##            self.climb.set(0)
+##
+##        if self.l_joy.getRawButton(2):
+##            self.climb.set(-1)
+##        else:
+##            self.climb.set(0)
 
 
         #Right Joystick Intake for Loader and Chute(Ground Pickup 50%)
